@@ -1,6 +1,6 @@
 fun main(args: Array<String>) {
 
-    val player = Player()
+    val player = Player("Madrigal", isBlessed = true, isImmortal = false)
     player.castFireball()
 
     printPlayerStatus(player)
