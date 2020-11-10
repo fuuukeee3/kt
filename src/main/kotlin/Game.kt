@@ -3,6 +3,10 @@ fun main(args: Array<String>) {
     val player = Player("Madrigal", isBlessed = true, isImmortal = false)
     player.castFireball()
 
+    var currentRoom: Room = TownSquare()
+    println(currentRoom.description())
+    println(currentRoom.load())
+
     printPlayerStatus(player)
 }
 
