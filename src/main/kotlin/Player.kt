@@ -13,6 +13,7 @@ class Player(
         }
 
     val hometown = selectHomeTown()
+    var currentPosition = Coordinate(0, 0)
 
     init {
         require(healthPoint > 0) { "healthPoint must be greater then zero." }
