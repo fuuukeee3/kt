@@ -2,10 +2,10 @@ import java.io.File
 
 class Player(
     _name: String,
-    var healthPoint: Int = 100,
+    override var healthPoint: Int = 100,
     val isBlessed: Boolean,
     private val isImmortal: Boolean
-) {
+) : Fightable {
     var name = _name
         get() = "${field.capitalize()} of $hometown"
         private set(value) {
@@ -20,10 +20,10 @@ class Player(
         require(name.isNotBlank()) { "Player must have a name." }
     }
 
-    constructor(name: String): this(
-            name,
-            isBlessed = true,
-            isImmortal = false) {
+    constructor(name: String) : this(
+        name,
+        isBlessed = true,
+        isImmortal = false) {
         if (name.toLowerCase() == "kar") healthPoint = 40
     }
 
@@ -53,4 +53,19 @@ class Player(
         .split("\n")
         .shuffled()
         .first()
+
+    override val diceCount = 3
+
+    override val diceSides = 6
+
+    override fun attack(opponent: Fightable): Int {
+        val damageDealt = if (isBlessed) {
+            damageRoll * 2
+        } else {
+            damageRoll
+        }
+
+        opponent.healthPoint -= damageDealt
+        return damageDealt
+    }
 }

@@ -1,5 +1,6 @@
 import java.lang.Exception
 import java.lang.IllegalStateException
+import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
     Game.play()
@@ -58,11 +59,36 @@ object Game {
         val argument = input.split(" ").getOrElse(1) { "" }
 
         fun processCommand() = when (command.toLowerCase()) {
+            "fight" -> fight()
             "move" -> move(argument)
             else -> commandNotFound()
         }
 
         private fun commandNotFound() =
             "I'm not quite sure what you're trying to do!"
+    }
+
+    private fun fight() = currentRoom.monster?.let {
+        while (player.healthPoint > 0 && it.healthPoint > 0) {
+            slay(it)
+            Thread.sleep(1000)
+        }
+
+        "Combat complete."
+    } ?: "There's nothing here to fight."
+
+    private fun slay(monster: Monster) {
+        println("${monster.name} did ${monster.attack(player)} damage!")
+        println("${player.name} did ${player.attack(monster)} damage!")
+
+        if (player.healthPoint <= 0) {
+            println(">>> You have been defeated! Thanks for playing. <<<")
+            exitProcess(0)
+        }
+
+        if (monster.healthPoint <= 0) {
+            println(">>> ${monster.name} has been defeated! <<<")
+            currentRoom.monster = null
+        }
     }
 }
